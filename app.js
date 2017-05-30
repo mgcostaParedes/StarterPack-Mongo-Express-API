@@ -9,6 +9,7 @@ mongoose.connect('mongodb://localhost/apiproject');
 const app = express();
 
 //Routes
+const cars = require('./routes/cars');
 const users = require('./routes/users');
 
 //middleware
@@ -16,6 +17,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 
 //routes
+app.use('/cars', cars);
 app.use('/users', users);
 
 //catch 404 errors and forward them to error handler
