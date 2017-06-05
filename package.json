@@ -10,6 +10,7 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "express-promise-router": "^1.1.1",
+    "helmet": "^3.6.1",
     "joi": "^10.5.1",
     "join": "^3.0.0",
     "mongoose": "^4.10.1",
