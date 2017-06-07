@@ -1,0 +1,40 @@
+<div class="col-md-6 offset-md-3">
+<form class="form-signin" action="/users/register" method="POST">
+  <h2 class="form-signin-heading">Please sign up</h2>
+
+  <div class="col-sm-12 form-group">
+    <label for="inputEmail">Email address</label>
+    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
+  </div>
+
+  <div class="col-sm-12 form-group">
+    <label for="inputUsername">Username</label>
+    <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required>
+  </div>
+
+  <div class="col-sm-12 form-group">
+    <label for="inputPassword">Password</label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+  </div>
+
+  <div class="col-sm-12 form-group">
+    <label for="inputConfirmPassword">Confirm Password</label>
+    <input type="password" id="inputConfirmPassword" name="confirmationPassword" class="form-control" placeholder="Confirm Password" required>
+  </div>
+
+  <br/>
+
+  <div class="col-sm-12">
+   <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
+  </div>
+
+  <div class="col-sm-12 margin-20-top">
+  {{#if success_messages }}
+    <div class="alert alert-success">{{success_messages}}</div>
+  {{/if}}
+  {{#if error_messages }}
+    <div class="alert alert-danger">{{error_messages}}</div>
+  {{/if}}
+  </div>
+</form>
+</div>

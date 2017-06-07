@@ -78,6 +78,12 @@ module.exports = {
         }),
         idSchema: Joi.object().keys({
             param: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+        }),
+        userRegister: Joi.object().keys({
+          email: Joi.string().email().required(),
+          username: Joi.string().required(),
+          password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
+          confirmationPassword: Joi.any().valid(Joi.ref('password')).required()
         })
     }
 }

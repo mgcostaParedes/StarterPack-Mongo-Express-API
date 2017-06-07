@@ -1,19 +1,52 @@
 const express = require('express');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const morgan = require('morgan')
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const expressHandlebars = require('express-handlebars');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/apiproject');
 
 const app = express();
-
+app.use(morgan('dev'));
 app.use(helmet());
+
+//VIEWS ENGINE
+// View Engine
+app.set('views', path.join(__dirname, 'views'));
+app.engine('handlebars', expressHandlebars({ defaultLayout: 'layout' }));
+app.set('view engine', 'handlebars');
+      
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  cookie: { maxAge: 60000 },
+  secret: 'codeworkrsecret',
+  saveUninitialized: false,
+  resave: false
+}));
+
+//FLASH MESSAGES
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success_messages = req.flash('success');
+  res.locals.error_messages = req.flash('error');
+  next();
+});
 
 //Routes
 const cars = require('./routes/cars');
 const users = require('./routes/users');
+const index = require('./routes/index');
 
 //middleware
 app.use(logger('dev'));
@@ -22,6 +55,7 @@ app.use(bodyParser.json());
 //routes
 app.use('/cars', cars);
 app.use('/users', users);
+app.use('/', index);
 
 //catch 404 errors and forward them to error handler
 app.use((req, res, next) => {
