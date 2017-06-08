@@ -1,13 +1,22 @@
-<form class="form-signin" action="/users/login" method="POST">
-  <h2 class="form-signin-heading">Please sign in</h2>
+<div class="col-md-6 offset-md-3">
+	<form class="form-signin" action="/users/login" method="POST">
+	  <h2 class="form-signin-heading">Please sign in</h2>
 
-  <label for="inputEmail" class="sr-only">Email address</label>
-  <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
+	  <div class="col-sm-12 form-group">
+		  <label for="inputEmail">Email address</label>
+		  <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
+	  </div>
 
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+	  <div class="col-sm-12 form-group">
+		  <label for="inputPassword" class="sr-only">Password</label>
+		  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+	  </div>
 
-  <br/>
-  
-  <button class="btn btn-lg btn-default btn-block" type="submit">Sign in</button>
-</form>
+	  <br/>
+	  
+	  <div class="col-sm-12 form-group">
+	  <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
+	  </div>
+	  {{> flash-message}}
+	</form>
+</div>

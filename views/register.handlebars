@@ -28,13 +28,6 @@
    <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
   </div>
 
-  <div class="col-sm-12 margin-20-top">
-  {{#if success_messages }}
-    <div class="alert alert-success">{{success_messages}}</div>
-  {{/if}}
-  {{#if error_messages }}
-    <div class="alert alert-danger">{{error_messages}}</div>
-  {{/if}}
-  </div>
+  {{> flash-message}}
 </form>
 </div>

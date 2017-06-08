@@ -50,6 +50,19 @@ router.route('/register')
         res.redirect('/users/register');
         return
       }
+      //HASH PASSWORD
+      const hash = await User.hashPassword(result.value.password);
+
+      //SAVE USER
+      delete result.value.confirmationPassword;
+      result.value.password = hash;
+
+      const newUser = await new User(result.value);
+      await newUser.save();
+
+      req.flash('success', 'You may now login!');
+      res.redirect('/users/login');
+
     } catch(error) {
       next(error);
     }
