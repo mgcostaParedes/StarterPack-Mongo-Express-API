@@ -15,8 +15,8 @@ MongoDB API With NodeJS and Express Start Pack 1.0 (with user model and authenti
 * Morgan
 * Body-parser
 * Connect-flash
-# Bcryptjs
-# Bootstrap 4
+* Bcryptjs
+* Bootstrap 4
 
 ## Installing
 
