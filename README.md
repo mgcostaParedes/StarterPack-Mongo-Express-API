@@ -1,6 +1,6 @@
 # MongoDB-API-Node-Express-Starter-Pack
 
-MongoDB API With NodeJS and Express Start Pack 1.0 (with user model)
+MongoDB API With NodeJS and Express Start Pack 1.0 (with user model and authentication flow in the box). 
 
 ## Dependencies
 
@@ -15,6 +15,8 @@ MongoDB API With NodeJS and Express Start Pack 1.0 (with user model)
 * Morgan
 * Body-parser
 * Connect-flash
+# Bcryptjs
+# Bootstrap 4
 
 ## Installing
 
