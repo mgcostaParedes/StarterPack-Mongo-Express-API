@@ -38,6 +38,22 @@ module.exports = {
             }
         }
     },
+    
+    //MIDDLEWARE AUTHENTICATE
+    isAuthenticated: (req, res, next) => {
+        if(req.isAuthenticated()) {
+            return next();
+        } else {
+            res.redirect('/');
+        }
+    },
+    isNotAuthenticated: (req, res, next) => {
+        if(req.isAuthenticated()) {
+          res.redirect('/');
+        } else {
+          return next();
+        }
+    },
 
     schemas: {
         userSchema: Joi.object().keys({
@@ -82,7 +98,7 @@ module.exports = {
         userRegister: Joi.object().keys({
           email: Joi.string().email().required(),
           username: Joi.string().required(),
-          password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
+          password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/).required(),
           confirmationPassword: Joi.any().valid(Joi.ref('password')).required()
         })
     }

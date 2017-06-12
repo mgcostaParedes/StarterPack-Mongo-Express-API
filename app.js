@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('passport');
+
+require('./config/passport');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/apiproject');
@@ -34,25 +37,33 @@ app.use(session({
   resave: false
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 //FLASH MESSAGES
 app.use(flash());
 
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success');
   res.locals.error_messages = req.flash('error');
+  res.locals.isAuthenticated = req.user ? true : false;
   next();
 });
 
 //Routes
 const cars = require('./routes/cars');
 const users = require('./routes/users');
+const usersApi = require('./routes/api/users');
 const index = require('./routes/index');
 
 //middleware
 app.use(logger('dev'));
 app.use(bodyParser.json());
 
-//routes
+//routes API
+app.use('/api/users', usersApi);
+
+//routes APP
 app.use('/cars', cars);
 app.use('/users', users);
 app.use('/', index);

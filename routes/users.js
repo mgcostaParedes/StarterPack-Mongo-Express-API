@@ -3,70 +3,43 @@ const express = require('express');
 const router = require('express-promise-router')();
 const joi = require('joi');
 const User = require('../models/user');
+const passport = require('passport');
 
-const UsersController = require('../controllers/users');
 
-const { validateParam, validateBody, schemas } = require('../helpers/routeHelpers');
+const Authenticate = require('../controllers/authenticate/authenticate');
 
-//API ROUTES
-router.route('/api')
-    .get(UsersController.index)
-    .post(validateBody(schemas.userSchema), UsersController.newUser);
-
-router.route('/api/:userId')
-    .get(validateParam(schemas.idSchema, 'userId'), UsersController.getUser)
-    .put([validateParam(schemas.idSchema, 'userId'),
-     validateBody(schemas.userSchema)], UsersController.replaceUser)
-    .patch([validateParam(schemas.idSchema, 'idUser'), 
-    validateBody(schemas.userOptionalSchema)],UsersController.updateUser);
-
-router.route('/api/:userId/cars')
-    .get(validateParam(schemas.idSchema, 'userId'), UsersController.getUsersCars)
-    .post([validateParam(schemas.idSchema, 'userId'), validateBody(schemas.patchCarSchema)],UsersController.newUserCar);
+const { isAuthenticated, isNotAuthenticated, schemas } = require('../helpers/routeHelpers');
 
 
 //VIEWS ROUTES
-router.route('/login').get((req, res) => {
+router.route('/login')
+.get(isNotAuthenticated, (req, res) => {
 	res.render('login');
 })
+.post(passport.authenticate('local', {
+  successRedirect: '/users/dashboard',
+  failureRedirect: '/users/login',
+  failureFlash: true
+}));
+
+router.route('/dashboard')
+  .get(isAuthenticated, (req, res) => {
+    res.render('dashboard', {
+      username: req.user.username
+    });
+  })
 
 router.route('/register')
-  .get((req, res) => {
+  .get(isNotAuthenticated, (req, res) => {
     res.render('register');
   })
-  .post(async (req, res, next) => {
-    try {
-      const result = joi.validate(req.body, schemas.userRegister);
-    
-      if(result.error) {
-        req.flash('error', 'Data is not valid. Please try again');
-        res.redirect('/users/register');
-        return
-      }
-      //CHECK IF EMAIL IS ALREADY TAKEN
-      const user = await User.findOne({'email': result.value.email});
-      if(user) {
-        req.flash('error', 'Email is already in use.');
-        res.redirect('/users/register');
-        return
-      }
-      //HASH PASSWORD
-      const hash = await User.hashPassword(result.value.password);
+  .post(Authenticate.registerUser);
 
-      //SAVE USER
-      delete result.value.confirmationPassword;
-      result.value.password = hash;
-
-      const newUser = await new User(result.value);
-      await newUser.save();
-
-      req.flash('success', 'You may now login!');
-      res.redirect('/users/login');
-
-    } catch(error) {
-      next(error);
-    }
+router.route('/logout')
+  .get(isAuthenticated, (req, res) => {
+    req.logout();
+    req.flash('success', 'Successfully logged out.')
+    res.redirect('/users/login');
   });
-
 
 module.exports = router;
