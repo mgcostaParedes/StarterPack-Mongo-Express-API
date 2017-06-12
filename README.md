@@ -5,6 +5,7 @@ MongoDB API With NodeJS and Express Start Pack 1.0 (with user model and authenti
 ## Dependencies
 
 * Mongoose
+* Passport
 * Express
 * Express Promise Router
 * Express handlebars
@@ -23,3 +24,10 @@ MongoDB API With NodeJS and Express Start Pack 1.0 (with user model and authenti
 ```
 Yarn install
 ```
+
+## Initializing
+
+```
+Yarn start
+```
+
